@@ -1,0 +1,35 @@
+body{
+	background-color: #f0f0f0;
+	color: #222222;
+	font-family:  arial, helvetica, sans-serif;
+	font-size: 76%; /* 1.0 em is now 12pt */
+}
+h1 {background-color: #222222; color: white; padding: 8px; width:80%}
+.hidden {display:none;}
+#page {position:relative}
+#actions {position: absolute; top:-90px; left: 500px}
+#notices {position: absolute; top:45px; border: 1px solid green; background-color: yellow; padding: 8px; width:80%; margin-bottom:10px;}
+#content {position: absolute; top:60px}
+
+div#filter {
+  margin-bottom:3em;
+  div#filter_on, div#filter_off {
+    margin-top:20px; border:1px solid #888888; background: #eeeeee; padding:6px;
+  }
+  div.radios {
+    margin-left:30px; margin-right:10px; padding:8px; font-size: 0.8em; border: 1px solid #cccccc; background: #f8f8f8;
+    td {padding-left:8px; text-align:right;}
+  }
+}
+
+.localizations {
+  .path-heading td {padding-top:20px; border-bottom: 1px solid black;}
+  .localization_record {
+    td { vertical-align: top;}
+    .lang {width:20px; padding-top:9px; font-style:italic;}
+    .localization_string {
+      color: green; padding-top:9px; padding-bottom: 9px; width:250px;
+    }
+  }
+	.localization_input {color: blue;}
+}

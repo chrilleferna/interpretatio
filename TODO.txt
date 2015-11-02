@@ -1,0 +1,10 @@
+- Encapsulate localization hash as model
+- Setup file
+  - file organization
+  - languages
+- Define the (at least) two ways files can be organized (in setup and then in code)
+- Hook to restrict access from application
+- CSS overrides in application
+- Tests
+- ReadMe
+- Implement in existing applications

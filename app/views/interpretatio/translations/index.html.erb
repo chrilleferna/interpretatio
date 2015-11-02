@@ -1,0 +1,154 @@
+<div id="actions">
+	<%= button_to "Backup the files", :action=> :backup_files %>
+</div>
+
+<div id="filter">
+  <div id="filter_on" class = "hidden" style="">
+  	<h2><%= image_tag "interpretatio/icon_fold_open.png" %> Selection filter</h2>
+  	<%= form_tag :action=> :set_filter do %>		
+  		<h3>Section:</h3>
+  		<div class="radios">
+  			<table>
+  				<tr>
+  					<td><b>Do not limit</b>: <%= radio_button_tag 'filter_section', 'all', @the_section == '' %></td>
+  					<% for toplevel in @toplevels do %>
+  						<% ctr = ctr || 0 %>
+  						<% ctr = ctr + 1 %>
+  						<%= ctr%6 == 0 ? "</tr><tr>" : ""%>
+  							<td><%= toplevel %>: <%= radio_button_tag 'filter_section', toplevel, @the_section == toplevel %></td>
+  					<% end %>
+  			</table>
+  		</div>
+  		<h3>Languages:</h3>
+  			<div class="radios">
+  			<table>
+  				<tr>
+  					<% for lang in @all_langs do %>
+  						<td><%= lang %>: <%= check_box_tag 'language[]', lang, @selected_langs.include?(lang) %>
+  						</td>
+  					<% end %>
+  				</tr>
+  			</table>
+  		</div>
+  		<p align="right"><%= submit_tag "Filter" %></p>
+  	<% end %>
+  </div>
+  <div id="filter_off">
+  	<h2><%= image_tag "interpretatio/icon_fold_close.png" %> Selection filter</h2>
+  </div>
+</div>
+
+<h3>Showing
+	<% if @the_section == '' %>
+		translations from all sections
+	<% else %>
+		the section &quot;<%= @the_section %>&quot;
+	<% end %>
+</h3>
+
+
+
+<table class="localizations">
+<% for path in @mega[@all_langs[0]].hash_to_paths do %>
+  <% # path is the path not including the language %>
+	<% if @the_section.to_s == "" or @the_section == path[0] %>
+  	<tr class="path-heading">
+  		<td colspan="2"><b><%= path.join('.') %></b></td>
+  		<td><%= link_to "New", :action => :new, :key =>path %></td>
+  		<td>
+  			<%= link_to "Delete", {:action => :delete, :key => path}, :data => {:confirm => "Are you sure?"}, :method=>:delete %>
+  		</td>
+  		<td>
+  			<%= link_to "Change", {:action => :edit_path, :key => path} %>
+  		</td>
+  	</tr>
+  	<% for lang in @mega.keys do %>
+  		<% if @selected_langs.include?(lang) %>
+        <% full_path = [lang].concat(path)%>
+  			<tr class="localization_record" id="<%= full_path.join('_') %>">
+  				<td class="lang"><%= lang %></td>
+          <% current = @mega.rread(full_path) || "nil" %>
+  				<td class="localization_string"><%= current %></td>
+  				<td class="localization_input hidden">
+            <%= form_tag({:action => :update_record}, {:remote => true}) do %>
+              <%= hidden_field_tag :key, full_path.join('.') %>
+              <%= text_field_tag :new_value, current %>
+              <%= submit_tag %>
+            <% end %>
+          </td>
+          <td>
+            <button class="btn_cancel hidden">Cancel</button>
+          </td>
+  			</tr>
+  		<% end %>
+  	<% end %>
+	<% end %>
+<% end %>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+	function click_in_localization(elem) {
+		current = elem.html()
+		// // $(elem).parent().find('.localization_input').find('textarea').val(current)
+    $(elem).parent().find('.localization_input').removeClass('hidden');
+		$(elem).parent().find('.btn_ok').removeClass('hidden');
+		$(elem).parent().find('.btn_cancel').removeClass('hidden');
+	}
+	
+	function clicked_cancel(elem) {
+		$(elem).find('.btn_cancel').addClass('hidden');
+		$(elem).find('.btn_ok').addClass('hidden');
+		$(elem).find('.localization_input').addClass('hidden');
+		return
+	}
+	
+	function clicked_ok(elem) {
+		newValue = 	$(elem).find('.localization_input').find('textarea').val()
+		$(elem).find('.localization_string').html(newValue)
+		$(elem).find('.localization_input').addClass('hidden');
+		$(elem).find('.btn_ok').addClass('hidden');
+		$(elem).find('.btn_cancel').addClass('hidden');
+    // var key = $(elem).attr('id')
+    //   $.ajax({
+    //     type: "POST",
+    //     url: "<%= url_for('interpretatio/translations/update_record') %>",
+    //     data: { 'key' : key, 'newValue' : newValue },
+    //     success: function(html){
+    //       //alert(JSON.parse(html));
+    //       notify_me(JSON.parse(html))
+    //     }
+    //     });
+	}
+	function hide_filter() {
+		$('#filter_on').addClass('hidden');
+		$('#filter_off').removeClass('hidden');
+	}
+	function show_filter() {
+		$('#filter_on').removeClass('hidden');
+		$('#filter_off').addClass('hidden');
+	}
+	
+	
+	$(document).ready(function() {
+		var current ="Inget"
+		$('.btn_ok').click(function() {
+			clicked_ok($(this).parent().parent())
+		})
+		$('.btn_cancel').click(function() {
+			clicked_cancel($(this).parent().parent())
+		})
+		$('.localization_string').click(function() {
+			click_in_localization($(this))
+		})
+		
+    if (""+$('#notices').html().replace(/\s+/g, "") != "") {
+			notify_me($('#notices').html());
+		} 
+		$('#filter_off img').click(function() {show_filter()})
+		$('#filter_on img').click(function() {hide_filter()})
+		hide_filter();
+
+  });
+	
+</script>
+	

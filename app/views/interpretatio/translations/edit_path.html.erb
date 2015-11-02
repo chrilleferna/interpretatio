@@ -1,0 +1,10 @@
+<h1>Edit path</h1>
+
+Current path = <%= @current_path %>
+
+<h3>New path:</h3>
+<%= form_tag :action => :update_path do %>
+  <%= hidden_field_tag :current_path, @current_path %>
+  <%= text_field_tag :new_path %>
+  <%= submit_tag %>
+<% end %>
