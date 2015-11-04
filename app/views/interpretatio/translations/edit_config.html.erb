@@ -1,0 +1,40 @@
+<h1>Edit settings</h1>
+<p>
+  YAML is the most common format for localization records and this format is quite readable also for humans.
+  However, I18n also supports the Ruby Hash format,
+  and since this is more efficient to process, it is the format natively used by Interpretatio.
+  Every update to a localization record is immediately reflected in Interpretatio's hash file, but you may of course export
+  data to YAML format at any time.
+</p>
+<p>If you want changes to localization records to be immediately effective you will want your application to also use the 
+  Ruby Hash format, store the Hash file in your config/localization directory and store the YAML files at another location
+  for consultation or to be used if you later decide to use that format. This is the default configuration.
+</p>
+<p>For a Ruby on Rails application we recommend the following settings:</p>
+<ul>
+  <li><b>Default setting, using the Ruby Hash format in your application:</b>
+    <ul>
+      <li>Localization hash directory: <%= @default_conf[:hash_dir] %></li>
+      <li>Yaml directory: <%= @default_conf[:yaml_dir] %></li>
+      <li>Yaml backups directory: <%= @default_conf[:yaml_bu_dir] %></li>
+    </ul>
+  </li>
+  <li><b>Using YAML files in your application:</b>
+    <ul>
+      <li>Localization hash directory: <%= @default2_conf[:hash_dir] %></li>
+      <li>Yaml directory: <%= @default_conf[:yaml2_dir] %></li>
+      <li>Yaml backups directory: <%= @default_conf[:yaml_bu_dir] %></li>
+    </ul>
+  </li>
+</ul>
+  <%= form_tag({:action => :update_config}) do %>
+  <table>
+    <tr><th>Yaml directory</th><td><%= text_field_tag :yaml_dir, @theconfig[:yaml_dir] %></td></tr>
+    <tr><th>Localization hash directory</th><td><%= text_field_tag :hash_dir, @theconfig[:hash_dir] %></td></tr>
+    <tr><th>Yaml backups directory</th><td><%= text_field_tag :yaml_bu_dir, @theconfig[:yaml_bu_dir] %></td></tr>
+    <tr><th>Languages</th><td><%= text_field_tag :languages, @theconfig[:languages] %></td></tr>
+  </table>
+    <%= submit_tag %>
+  <% end %>
+  <p>When the changes are saved
+  

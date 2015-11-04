@@ -13,6 +13,12 @@
 <body>
 	<div id ="page">
 		<h1>Interpretatio Localization Workbench</h1>
+    <div class="menu">
+      <ul>
+        <li><%= link_to "Configuration", edit_config_translations_path %></li>
+        <li><%= link_to "Localization records", translations_path %></li>
+      </ul>
+    </div>
 		<div id="notices" class="hidden">
 			<%= flash[:notice] %>
       <%= flash[:error] %>

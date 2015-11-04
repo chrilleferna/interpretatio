@@ -3,6 +3,27 @@ class ::Hash
   # Many of the methods rely on 'paths' to address a particular part of the nested hash.
   # A 'path' is an array of keys, where the first element is the key on the first level, which may thus have a hash as its value.
   # The second element in the path is the key used to access the hash returned from using the first key, etc.
+  
+    def self.init_from_yaml
+      # Initialize the hash from all the yaml localization files that have data for the chosen languages
+      # Read in the original yaml files, sort and add any keys that are present in some but not all languages
+      # Write the full hash to file
+      config = Config.first
+      raise "Configuration missing" if config.nil?
+      full = {}
+      data = {}
+      config.langs.each {|lang|
+        data[lang] = YAML::load( File.open(config.yaml_dir+"/"+lang+'.yml' ))[lang].sort_by_key(true)
+        full=full.rmerge(data[lang])
+      }
+      @mega = {}
+      config.langs.each do |lang|
+        @mega[lang] = full.deep_dup # Create a deep copy
+        @mega[lang].set_values_from_other(data[lang], path = [])
+      end
+      File.open(config.hash_dir+'/interpretatio_hash.rb', "w") {|file| file.puts @mega.inspect }
+    end
+
     def hash_to_paths
       # returns an array of all the path arrays where we can find data in the self nested hash
       arr = []

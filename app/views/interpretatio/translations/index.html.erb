@@ -102,23 +102,7 @@
 		return
 	}
 	
-	function clicked_ok(elem) {
-		newValue = 	$(elem).find('.localization_input').find('textarea').val()
-		$(elem).find('.localization_string').html(newValue)
-		$(elem).find('.localization_input').addClass('hidden');
-		$(elem).find('.btn_ok').addClass('hidden');
-		$(elem).find('.btn_cancel').addClass('hidden');
-    // var key = $(elem).attr('id')
-    //   $.ajax({
-    //     type: "POST",
-    //     url: "<%= url_for('interpretatio/translations/update_record') %>",
-    //     data: { 'key' : key, 'newValue' : newValue },
-    //     success: function(html){
-    //       //alert(JSON.parse(html));
-    //       notify_me(JSON.parse(html))
-    //     }
-    //     });
-	}
+
 	function hide_filter() {
 		$('#filter_on').addClass('hidden');
 		$('#filter_off').removeClass('hidden');
@@ -131,9 +115,6 @@
 	
 	$(document).ready(function() {
 		var current ="Inget"
-		$('.btn_ok').click(function() {
-			clicked_ok($(this).parent().parent())
-		})
 		$('.btn_cancel').click(function() {
 			clicked_cancel($(this).parent().parent())
 		})

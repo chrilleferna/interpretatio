@@ -4,12 +4,12 @@ body{
 	font-family:  arial, helvetica, sans-serif;
 	font-size: 76%; /* 1.0 em is now 12pt */
 }
-h1 {background-color: #222222; color: white; padding: 8px; width:80%}
+h1 {background-color: #222222; color: white; padding-top: 8px; padding-bottom: 8px; padding-left:4px; width:80%; margin:0px;}
 .hidden {display:none;}
 #page {position:relative}
 #actions {position: absolute; top:-90px; left: 500px}
 #notices {position: absolute; top:45px; border: 1px solid green; background-color: yellow; padding: 8px; width:80%; margin-bottom:10px;}
-#content {position: absolute; top:60px}
+#content {position: absolute; top:90px}
 
 div#filter {
   margin-bottom:3em;
@@ -32,4 +32,32 @@ div#filter {
     }
   }
 	.localization_input {color: blue;}
+}
+
+div.menu {
+  padding-left:4px; width: 80%; height:2.5em; background-color: #bbb;
+  ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+  }
+
+  li {
+    display: inline;
+    float: left;
+    margin:4px;
+    margin-right:10px;
+  }
+
+  a {
+      display: block; text-decoration:none; color:red; padding:4px; background-color: #ddd;
+      border-bottom: 2px solid #999; border-right: 2px solid #999;
+  }
+}
+
+// Forms
+
+input[type='text'] { width:400px; }
+form {
+  th {text-align:right;}
 }

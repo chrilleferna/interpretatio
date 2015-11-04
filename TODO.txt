@@ -8,3 +8,35 @@
 - Tests
 - ReadMe
 - Implement in existing applications
+
+Use
+====
+1) gem :interpretatio in Gemfile, bundle
+
+2) Add the following line in routes.rb:
+  mount Interpretatio::Engine, at: "/translations"
+This will make the Interprtatio Workbench available in your application on...
+
+
+3) Decide on the usage scheme: a) use YAML files in your application, b) store the YAML files but Ruby Hash in your application
+
+4) create file interpreatio.rb in config/initializers with the following contents:
+  If a)
+  If b)
+  In either case: add a language hash for the languages to be supported
+
+
+Initialization Process
+=======================
+
+= During the initialization process, things will be moved to the right places and YAML files be imported as necessary
+
+Verify that the file interpretatio.rb exists. If not: Throw Exception.
+
+Verify that the directories exists. If not: create them.
+
+Verify that there are no YAML files in the wrong place. If not: move them
+
+Verify that there is a hash file in the right place. If not: create it and import any YAML file for the supported languages
+
+If there is a supported language which is not reflected in the Hash then add it and import YAML file if one is present

@@ -3,6 +3,8 @@ require_dependency "interpretatio/application_controller"
 module Interpretatio
   class TranslationsController < ApplicationController   
     require 'interpretatio/mylib'
+    before_filter :get_config, :except => :init_config
+    
 
     LANGUAGES_MAP = {'en' => 'English', 'sv' => 'Svenska'}
     LANGS =  LANGUAGES_MAP.keys
@@ -16,8 +18,50 @@ module Interpretatio
     
     
     def init
-      init_languages_hash
+      #init_languages_hash
+      Hash.init_from_yaml
       redirect_to action: :index
+    end
+    
+    def init_config
+      # This method is called from get_config before_filter when exception is raised trying to read the configuration
+      @conf = {
+        :yaml_dir => Rails.root.to_s + '/config/locales/YAML',
+        :hash_dir => Rails.root.to_s + '/config/locales/',
+        :yaml_bu_dir => Rails.root.to_s + '/config/locales/BACKUPS',
+        :languages => {'en' => 'English', 'sv' => 'Svenska'}
+        }
+      File.open(Rails.root.to_s + '/config/interpretatio.rb', "w") {|file| file.puts @conf.inspect }
+      redirect_to :action => :edit_config
+    end
+    
+    def edit_config
+      @default_conf = {
+        :yaml_dir => Rails.root.to_s + '/config/locales/YAML',
+        :hash_dir => Rails.root.to_s + '/config/locales/',
+        :yaml_bu_dir => Rails.root.to_s + '/config/locales/BACKUPS',
+      }
+      @default2_conf = {
+        :yaml_dir => Rails.root.to_s + '/config/locales',
+        :hash_dir => Rails.root.to_s + '/config/locales/INTERPRETIO',
+        :yaml_bu_dir => Rails.root.to_s + '/config/locales/BACKUPS',
+      }
+    end
+    
+    def update_config
+      yaml_dir = verify_directory(params[:yaml_dir])
+      hash_dir = verify_directory(params[:hash_dir])
+      yaml_bu_dir = verify_directory(params[:yaml_bu_dir])
+      languages = verify_languages(params[:languages])
+      if yaml_dir && hash_dir && yaml_bu_dir && languages
+        @conf = {
+          :yaml_dir => yaml_dir,
+          :hash_dir => hash_dir,
+          :yaml_bu_dir => yaml_bu_dir,
+          :languages => languages
+          }
+        File.open(Rails.root.to_s + '/config/interpretatio.rb', "w") {|file| file.puts @conf.inspect}
+      end
     end
   
     def index
@@ -382,6 +426,17 @@ module Interpretatio
     end
   
     private
+    
+    def get_config
+      begin
+        File.open(Rails.root.to_s + '/config/interpretatio.rb', "r") {|file| @theconfig = eval(file.read)}
+      rescue
+        redirect_to :action => :init_config
+      end
+    end
+    
+    
+    
     def update_translation_record(lang, key, newValue)
       logger.debug "Updating record. Language= #{lang}, Key=#{key}, Value=#{newValue}"
       @data = YAML::load( File.open(RAILS_ROOT+'/config/locales/'+lang+'.yml' ))
