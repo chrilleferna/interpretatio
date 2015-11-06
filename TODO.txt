@@ -1,4 +1,3 @@
-- Encapsulate localization hash as model
 - Setup file
   - file organization
   - languages

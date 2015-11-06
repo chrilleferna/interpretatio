@@ -1,0 +1,69 @@
+<h2>Fix configuration problems</h2>
+<p>
+  
+  <% if @errcode == "1" # === No HASH file found ==== %>
+    No Hash file is present in #{HASH_DIRECTORY}. To correct the problem:
+    <ul>
+      <li>If a Hash file exists but in a different location:</li>
+      <ul>
+        <li>Move it to the correct location, or</li>
+        <li>Change the HASH_DIRECTORY setting in the file config/initializers/interpretatio_initializer.rb and restart your server</li>
+      </ul>
+      <li>If no Hash file exists: <%= link_to "Create it !", {} %></li>
+    </ul>
+    
+  <% elsif @errcode == "2" # === Language(s) missing from HASH file === %>
+    <% if @langs_not_in_hash.length == 1 %>
+      There is a missing language in the Hash file. To correct the problem:
+      <ul>
+        <li>If the missing language is not supposed to be supported, then remove it from the file config/initializers/interpretatio_initializer.rb and restart your server</li>
+        <li>If it should be supported: <%= link_to "Add to Hash file !", {:action => :add_languages_to_hash, :langs_not_in_hash => @langs_not_in_hash} %></li>
+      </ul>
+    <% else %>
+      There are <%= @langs_not_in_hash.length.to_s %> missing languages in the Hash file. To correct the problem:
+      <ul>
+        <li>If the missing languages are not supposed to be supported, then remove them from the file config/initializers/interpretatio_initializer.rb and restart your server</li>
+        <li>If they should be supported: <%= link_to "Add to Hash file !", {:action => :add_languages_to_hash, :langs_not_in_hash => @langs_not_in_hash} %></li>
+      </ul>
+    <% end %>
+    
+    
+  <% elsif @errcode == "3" # === More languages in HASH file than in configuration === %>
+    <% if @keys_not_in_langs.length == 1 %>
+      There is a language represented in the Hash file which is not in the configuration file. To correct the problem:
+      <ul>
+        <li>If the language should be supported, then add it in the file config/initializers/interpretatio_initializer.rb and restart your server</li>
+        <li>If it should not be supported then you can remove it from the Hash file.
+          <% if @have_data %>
+            <div class="warning">
+              PLEASE NOTICE: the Hash file contains localization data for this language. If you remove it from
+              the Hash file this data will be lost. You may want to export to YAML files before you do this.
+            </div>
+          <% else %>
+            There are no localization records for this/these language(s) in the Hash file; which means that they can safely be removed.
+          <% end %>
+          <%= link_to "Remove from Hash file !", {:action => :remove_languages_from_hash, :keys_not_in_langs => @keys_not_in_langs}, :data => {:confirm => "Are you sure?"} %>
+        </li>
+      </ul>
+    <% else %>
+      There are <%= @keys_not_in_langs.length %> languages represented in the Hash file which are not in the configuration file. To correct the problem:
+      <ul>
+        <li>If the languages should be supported, then add them in the file config/initializers/interpretatio_initializer.rb and restart your server</li>
+        <li>If they should not be supported then you can remove them from the Hash file.
+          <% if @have_data %>
+            <div class="warning">
+              PLEASE NOTICE: the Hash file contains localization data for these languages. If you remove them from
+              the Hash file this data will be lost. You may want to export to YAML files before you do this.
+            </div>
+          <% else %>
+            There are no localization records for this/these language(s) in the Hash file; which means that they can safely be removed.
+          <% end %>
+          <%= link_to "Remove from Hash file !", {:action => :remove_languages_from_hash, :keys_not_in_langs => @keys_not_in_langs}, :data => {:confirm => "Are you sure?"} %>
+        </li>
+      </ul>
+    <% end %>
+  <% end %>
+        
+        
+</p>
+  

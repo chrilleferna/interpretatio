@@ -23,5 +23,8 @@
     
   $(document).ready( function() {
     $('#notices').hide()
+    if ($('#flash_error').text() != '') {$('#flash_error').removeClass('hidden')};
+    if ($('#flash_notice').text() != '') {$('#flash_notice').removeClass('hidden')};
+    if ($('#flash_warning').text() != '') {$('#flash_warning').removeClass('hidden')};
   });
 

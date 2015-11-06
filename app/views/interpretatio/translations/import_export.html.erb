@@ -1,0 +1,24 @@
+<h2>Import and Export</h2>
+
+<div class="info-section">
+To export the Hash to YAML files, backing up the previous YAML files and the Hash file:<br/>
+<%= link_to "Click here !", {:action => :backup_files}, :class => "button button-block" %>
+</div>
+
+<div class="info-section">
+To revert the Hash to the latest backup:<br/>
+<%= link_to "Click here !", {:action => :backup_revert}, :data => {:confirm => "Are you sure?"}, :class => "button button-block" %>
+</div>
+
+<div class="info-section">
+Import YAML files for the chosen languages (<%= @all_languages.join(',') %>) from the YAML directory (<%= @yaml_directory %>)
+  <em>without overwriting</em> any translation records present in the Hash:<br/>
+  <%= link_to "Click here !", {:action => :import_files, :overwrite => "no"}, :class => "button button-block" %>
+</div>
+
+<div class="info-section">
+Import YAML files for the chosen languages (<%= @all_languages.join(',') %>) from the YAML directory (<%= @yaml_directory %>)
+  <em>overwriting</em> translation records present in the Hash with values from the import:<br/>
+  <%= link_to "Click here !", {:action => :import_files, :overwrite => "yes"}, :data => {:confirm => "Are you sure?"}, :class => "button button-block" %>
+</div>
+    

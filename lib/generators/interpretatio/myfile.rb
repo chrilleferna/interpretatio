@@ -1,1 +1,0 @@
-puts "Hej gamle man"

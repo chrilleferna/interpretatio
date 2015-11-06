@@ -106,6 +106,9 @@ class ::Hash
     def sort_by_key(recursive = false, &block)
       # Extension of the standard sort_by_key that only sorts the keys at the first level
       # If the parameter is set to true, then this becomes a recursive sort that will sort the keys on all levels
+      # Currently not used since there is no guarantee that a sorted hash is stored as such when written/re-read to/from file
+      # Courtesy http://dan.doezema.com/2012/04/recursively-sort-ruby-hash-by-key/
+      # License conditions and disclaimer: http://dan.doezema.com/licenses/new-bsd/
       self.keys.sort(&block).reduce({}) do |seed, key|
         seed[key] = self[key]
         if recursive && seed[key].is_a?(Hash)
@@ -116,7 +119,7 @@ class ::Hash
     end
     
     def set_values_from_other(other_hash, path = [])
-      # Set all the values in self from the values found in other_hash at the same path, or nil if there is value in other_hash
+      # Set all the values in self from the values found in other_hash at the same path, or nil if there is no value in other_hash
       for key in self.keys do
         if self[key].class == {}.class
           self[key].set_values_from_other(other_hash, path + [key])
@@ -130,11 +133,17 @@ end
 
 class ::Array
   # Recursive sort of nested array
+  # This is NOT the version we want since it reorders the elements of the array
     def sort_recur!
-        sort! do |a,b|
-            a.sort_recur! if a.is_a? Array
-            b.sort_recur! if b.is_a? Array
-            a <=> b
-        end
+      sort! do |a,b|
+          a.sort_recur! if a.is_a? Array
+          b.sort_recur! if b.is_a? Array
+          a <=> b
+      end
     end
+    
+    def rsort
+      self.sort_by {|e| [e[0], e[1], e[2], e[3], e[4], e[5], e[6]]}
+    end
+    
 end

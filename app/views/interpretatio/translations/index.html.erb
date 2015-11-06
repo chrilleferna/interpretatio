@@ -49,7 +49,7 @@
 
 
 <table class="localizations">
-<% for path in @mega[@all_langs[0]].hash_to_paths do %>
+<% for path in @path_array do %>
   <% # path is the path not including the language %>
 	<% if @the_section.to_s == "" or @the_section == path[0] %>
   	<tr class="path-heading">
