@@ -23,8 +23,8 @@
     
   $(document).ready( function() {
     $('#notices').hide()
-    if ($('#flash_error').text() != '') {$('#flash_error').removeClass('hidden')};
-    if ($('#flash_notice').text() != '') {$('#flash_notice').removeClass('hidden')};
-    if ($('#flash_warning').text() != '') {$('#flash_warning').removeClass('hidden')};
+    if ($('#flash_error').text() != '') {$('#flash_error').fadeIn().delay(7000).fadeOut()};
+    if ($('#flash_notice').text() != '') {$('#flash_notice').fadeIn().delay(3000).fadeOut()};
+    if ($('#flash_warning').text() != '') {$('#flash_warning').fadeIn().delay(4000).fadeOut()};
   });
 

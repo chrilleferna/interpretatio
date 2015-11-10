@@ -1,0 +1,18 @@
+# yaml 1 with simple leaf node removed
+yaml1:
+  lev00:
+    lev1:
+      abe: eba
+      xyz: zyx
+    lev2:
+      p2p: p2p
+      l2op: po2l
+    lev3:
+      abc: cba
+  lev01:
+    lev11: kalle
+    lev12: pelle
+    lev13:
+      lev131: putte
+
+    

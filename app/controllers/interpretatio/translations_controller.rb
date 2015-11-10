@@ -3,10 +3,10 @@ require_dependency "interpretatio/application_controller"
 module Interpretatio
   class TranslationsController < ApplicationController   
     require 'interpretatio/mylib'
-    before_filter :check_config, :except => [:fix_config, :add_languages_to_hash, :remove_languages_from_hash]
-    before_filter :_interprteatio_authorization
+    before_filter :check_config, :except => [:fix_config, :initialize_hash_file, :add_languages_to_hash, :remove_languages_from_hash]
+    before_filter :_interpreatio_authorization
     
-    def _interprteatio_authorization
+    def _interpreatio_authorization
       # If there is an authorization hook in the application then call it
       try(:interpretatio_authorization)
     end
@@ -31,6 +31,14 @@ module Interpretatio
       @yaml_directory = YAML_DIRECTORY
       @backup_directory = BACKUP_DIRECTORY
     end
+    
+    def initialize_hash_file
+      @mega = {}
+      LANGS.each{|lang| @mega[lang] = {}}
+      File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
+      flash[:notice] = "Empty Hash file created"
+      redirect_to :action => :index
+    end      
     
     def add_languages_to_hash
       langs_not_in_hash = params[:langs_not_in_hash]
@@ -97,11 +105,17 @@ module Interpretatio
       # render :text => params.inspect
       current_path = params[:current_path].split('.')
       new_path = params[:new_path].split('.')
+      if current_path == new_path
+        flash[:notice] = "Not modified since same path given"
+        redirect_to :action => :index
+        return
+      end
       ok = true
       for lang in LANGS do
         lcurr = [lang].concat(current_path)
         lnew = [lang].concat(new_path)
-        @mega = @mega.rput(lnew, @mega.rread(lcurr), true, false)
+        current_value = @mega.rread(lcurr) || {}
+        @mega = @mega.rput(lnew, current_value, true, false)
         if @mega
           @mega.remove_path(lcurr)
         else
@@ -121,7 +135,7 @@ module Interpretatio
   
     def new
       #return render :text => params.inspect
-      @key = params[:key].join('.')
+      @key = params[:key].present? ? params[:key].join('.') : ""
     end
 
     def create
@@ -136,7 +150,7 @@ module Interpretatio
         end
       end
       if exists_already
-        flash[:error] = "Key exists already"
+        flash[:error] = "Key or part of it exists already and has localization data"
       else
         for lang in LANGS do
           lpath = [lang].concat(path)
@@ -205,7 +219,7 @@ module Interpretatio
       for lang in LANGS do
         s = "#YAML file created by export from Interpretio at #{Time.now}\n"
         s << "#{lang}:"
-        s << hash_to_yaml(@mega[lang],1)
+        s << @mega[lang].to_yaml(1)
         File.open(YAML_DIRECTORY+"#{lang}.yml", "w") {|file| file.puts s }
       end
       flash[:notice] = "Files have been backed up and new YAML files created from the HASH"
@@ -267,9 +281,9 @@ module Interpretatio
           num += 1
           data = YAML::load( File.open(YAML_DIRECTORY+"#{lang}.yml" ))
           if overwrite
-            @mega = @mega.rmerge(data)
+            @mega = @mega.deep_merge(data)
           else
-            @mega = data.rmerge(@mega)
+            @mega = data.deep_merge(@mega)
           end
         end
       end
@@ -311,19 +325,6 @@ module Interpretatio
       str
     end
     
-    def hash_to_yaml(h, level=0)
-      # Return a string of pretty printed YAML code from the hash
-      str = ""
-      for key in h.keys do
-        str << "\n" + " "*level*2 + key.to_s + ": "
-        if h[key].class == {}.class
-          str << hash_to_yaml(h[key], level+1)
-        else
-          str << h[key].inspect
-        end
-      end
-      str
-    end
   
     def pretty_fixed(h, data, path = [], level = 0)
       str = ""
@@ -366,6 +367,7 @@ module Interpretatio
         redirect_to :action => :fix_config, :errcode => 3, :have_data => !are_empty, :keys_not_in_langs => keys_not_in_langs
         return
       end
+      # Look for YAML files in the HASH directory that would impact the I18n 
       possibly_offending = LANGS.collect{|lang| HASH_DIRECTORY.join(lang+'.yml')}
       logger.debug "POSSIBLE OFFENDING: #{possibly_offending.inspect}"
       #if Dir.glob(HASH_DIRECTORY+"*.yml").length > 0

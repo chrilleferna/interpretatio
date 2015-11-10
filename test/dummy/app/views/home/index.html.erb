@@ -1,0 +1,15 @@
+<h1>Test application for Interpretatio</h1>
+
+This is a stupidly simple test application for Interpretatio. Since we want to test the authorization hook, which for example
+can enforce that only logged in users have access to the localization records, we allow users to log in in a very simplified way.
+
+<ul>
+  <li>Goto <%= link_to "other part of test application", action: :other %></li>
+  <li>Goto <%= link_to "INTERPRETATIO", interpretatio.root_url %></li>
+</ul>
+
+<% if @u.present? %>
+  You are logged in as <%= @u %>. <%= link_to "Log out", action: :log_out %>
+<% else %>  
+  You are not logged in. <%= link_to "Log in", action: :log_in %>
+<% end %>    

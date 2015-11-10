@@ -1,0 +1,22 @@
+# Result of merging yaml1 into yaml2
+yaml1:
+  lev00:
+    lev1:
+      abe: eba
+      cde: edc
+      xyz: zyx
+    lev2:
+      p2p: p2p
+      l2op: po2l
+    lev3:
+      abc: cba
+  levx:
+    levxy: y
+    levxz: z
+  lev01:
+    lev11: kalle
+    lev12: pelle
+    lev13:
+      lev131: putte
+      lev132: plutt
+    lev14: pucko

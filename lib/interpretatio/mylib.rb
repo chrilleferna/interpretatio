@@ -5,6 +5,7 @@ class ::Hash
   # The second element in the path is the key used to access the hash returned from using the first key, etc.
   
     def self.init_from_yaml
+      # NOT USED
       # Initialize the hash from all the yaml localization files that have data for the chosen languages
       # Read in the original yaml files, sort and add any keys that are present in some but not all languages
       # Write the full hash to file
@@ -14,7 +15,7 @@ class ::Hash
       data = {}
       config.langs.each {|lang|
         data[lang] = YAML::load( File.open(config.yaml_dir+"/"+lang+'.yml' ))[lang].sort_by_key(true)
-        full=full.rmerge(data[lang])
+        full=full.deep_merge(data[lang])
       }
       @mega = {}
       config.langs.each do |lang|
@@ -39,7 +40,7 @@ class ::Hash
     end
   
     def remove_path(path)
-      # Remove the key-value-pair addressed by path
+      # Modifies self by removing the key-value-pair addressed by path
       # If path goes "deeper" into self than where there is data, this is OK. We go as far as possible
       # This may mean that other parts higher up in the hierarchy becomes empty, so these are removed too
       # 1) remove the last key-value
@@ -72,6 +73,10 @@ class ::Hash
       path.inject(self){|mem,item| mem = mem[item]} rescue nil
     end
     
+    def rdirty?(path)
+      # Run down the path (like rread) and return true if there is a 
+    end
+    
     def rput(path, val, overwrite=false, overwrite_hash=false)
       # Returns either a copy of self with a new value at path or false
       # It returns false if:
@@ -80,20 +85,22 @@ class ::Hash
       #      (this would mean that we're trying to overwrite a deeper structure)
       # Rails.logger.debug "In rput"
       existing_value = self.rread(path)
-      # Rails.logger.debug "Existing value = #{existing_value}"
+      Rails.logger.debug "Existing value = #{existing_value}"
       if existing_value
         return false if !overwrite
-        return false if !overwrite_hash && (existing_value.class == {}.class)
+        return false if !overwrite_hash && (existing_value.class == {}.class) && (existing_value != {})
       end
       hx = Hash.create_nested_hash(path,val)
-      # Rails.logger.debug "hx = #{hx.inspect}"
-      # Rails.logger.debug "Result of merge: #{self.rmerge(hx)}"
-      self.rmerge(hx)
+      Rails.logger.debug "hx = #{hx.inspect}"
+      # puts "hx = #{hx.inspect}"
+      # Rails.logger.debug "Result of merge: #{self.deep_merge(hx)}"
+      self.deep_merge(hx)
     end
 
 
     def rmerge(other_hash)
       # Recursively merge with the other hash
+      # NOT USED. RAILS NOW HAS A DEEP MERGE
       # Any path of keys that appears in the other_hash will add the corresponding part to self, using the
       # values picked up in other_hash
       # Rails.logger.debug "RMERGE. self=#{self}, other_hash=#{other_hash}"
@@ -104,9 +111,9 @@ class ::Hash
     end
     
     def sort_by_key(recursive = false, &block)
-      # Extension of the standard sort_by_key that only sorts the keys at the first level
+      # Extension of the standard sort_by_key which only sorts the keys at the first level
       # If the parameter is set to true, then this becomes a recursive sort that will sort the keys on all levels
-      # Currently not used since there is no guarantee that a sorted hash is stored as such when written/re-read to/from file
+      # CURRENTLY NOT USED since there is no guarantee that a sorted hash is stored as such when written/re-read to/from file
       # Courtesy http://dan.doezema.com/2012/04/recursively-sort-ruby-hash-by-key/
       # License conditions and disclaimer: http://dan.doezema.com/licenses/new-bsd/
       self.keys.sort(&block).reduce({}) do |seed, key|
@@ -119,7 +126,9 @@ class ::Hash
     end
     
     def set_values_from_other(other_hash, path = [])
-      # Set all the values in self from the values found in other_hash at the same path, or nil if there is no value in other_hash
+      # Set all the values in self from the values found in other_hash at the same path,
+      # or nil if there is no value in other_hash
+      # NOT CURRENTLY USED
       for key in self.keys do
         if self[key].class == {}.class
           self[key].set_values_from_other(other_hash, path + [key])
@@ -127,6 +136,20 @@ class ::Hash
           self[key] = other_hash.rread(path + [key])
         end
       end
+    end
+    
+    def to_yaml(level=0)
+      # Return a string of pretty printed YAML code from the hash
+      str = ""
+      for key in self.keys do
+        str << "\n" + " "*level*2 + key.to_s + ": "
+        if self[key].class == {}.class
+          str << self[key].to_yaml(level+1)
+        else
+          str << self[key].inspect
+        end
+      end
+      str
     end
 
 end

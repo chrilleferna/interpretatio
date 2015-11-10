@@ -46,7 +46,9 @@
 	<% end %>
 </h3>
 
-
+<% if @path_array.length == 0 %>
+  <%= link_to "New localization record", :action => :new, :key => [] %>
+<% end %>
 
 <table class="localizations">
 <% for path in @path_array do %>

@@ -9,7 +9,7 @@
         <li>Move it to the correct location, or</li>
         <li>Change the HASH_DIRECTORY setting in the file config/initializers/interpretatio_initializer.rb and restart your server</li>
       </ul>
-      <li>If no Hash file exists: <%= link_to "Create it !", {} %></li>
+      <li>If no Hash file exists: <%= link_to "Create it !", {action: :initialize_hash_file} %></li>
     </ul>
     
   <% elsif @errcode == "2" # === Language(s) missing from HASH file === %>

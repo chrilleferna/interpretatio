@@ -1,0 +1,17 @@
+# yaml1 after removing leaf node that will have provoked removal of parent node
+yaml1:
+  lev00:
+    lev1:
+      abe: eba
+      cde: edc
+      xyz: zyx
+    lev2:
+      p2p: p2p
+      l2op: po2l
+  lev01:
+    lev11: kalle
+    lev12: pelle
+    lev13:
+      lev131: putte
+
+    

@@ -6,8 +6,12 @@ module Interpretatio
       @routes = Engine.routes
     end
 
-    # test "the truth" do
-    #   assert true
-    # end
+    test "the truth" do
+      puts "controller test"
+      assert true
+    end
+    
+    test "should redirect to fix_config when no hash_file" do
+    end
   end
 end
