@@ -25,4 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'jbuilder', '~> 2.0'
   s.add_dependency 'json'
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency 'guard-minitest'
+  s.add_development_dependency 'minitest-colorize' 
+  s.add_development_dependency 'terminal-notifier-guard'
 end

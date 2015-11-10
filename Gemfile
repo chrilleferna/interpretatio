@@ -13,3 +13,11 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
+# guard testing
+group :development do
+  gem 'guard-minitest'
+  # Colorize minitest output and show failing tests instantly.
+  gem 'minitest-colorize'
+  # https://github.com/Springest/terminal-notifier-guard
+  gem 'terminal-notifier-guard'
+end

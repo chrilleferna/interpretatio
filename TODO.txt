@@ -1,12 +1,12 @@
-- Setup file
+x Setup file
   - file organization
   - languages
-- Define the (at least) two ways files can be organized (in setup and then in code)
-- Hook to restrict access from application
-- CSS overrides in application
+x Define the (at least) two ways files can be organized (in setup and then in code)
+x Hook to restrict access from application
+x CSS overrides in application
 - Tests
 - ReadMe
-- Implement in existing applications
+- Implement in existing applications. Also with file in public/system
 
 Use
 ====
@@ -25,17 +25,3 @@ This will make the Interprtatio Workbench available in your application on...
   In either case: add a language hash for the languages to be supported
 
 
-Initialization Process
-=======================
-
-= During the initialization process, things will be moved to the right places and YAML files be imported as necessary
-
-Verify that the file interpretatio.rb exists. If not: Throw Exception.
-
-Verify that the directories exists. If not: create them.
-
-Verify that there are no YAML files in the wrong place. If not: move them
-
-Verify that there is a hash file in the right place. If not: create it and import any YAML file for the supported languages
-
-If there is a supported language which is not reflected in the Hash then add it and import YAML file if one is present

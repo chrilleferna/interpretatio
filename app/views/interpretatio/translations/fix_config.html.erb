@@ -2,7 +2,7 @@
 <p>
   
   <% if @errcode == "1" # === No HASH file found ==== %>
-    No Hash file is present in #{HASH_DIRECTORY}. To correct the problem:
+    No Hash file is present in <%= @hash_directory %>. To correct the problem:
     <ul>
       <li>If a Hash file exists but in a different location:</li>
       <ul>
