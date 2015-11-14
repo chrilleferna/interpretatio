@@ -1,0 +1,10 @@
+en:
+  models:
+    people: people
+    houses: different
+    cars: cars
+    boats: ships
+  errors:
+    unconnected: You are not logged in
+    houses_empty: There are no houses defined
+    

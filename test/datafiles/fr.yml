@@ -1,0 +1,10 @@
+fr:
+  models:
+    people: personnes
+    houses: maisons
+    cars: autos
+  errors:
+    unconnected: Vous n'êtes pas connecté
+    houses_empty: Il n'y a pas de maison definie
+    
+    

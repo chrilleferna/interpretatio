@@ -1,0 +1,9 @@
+en:
+  models:
+    people: people
+    houses: houses
+    cars: cars
+  errors:
+    unconnected: You are not logged in
+    houses_empty: There are no houses defined
+    

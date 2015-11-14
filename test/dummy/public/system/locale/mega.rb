@@ -1,1 +1,1 @@
-{"en"=>{"kalle"=>{"pelle"=>{"august"=>"ego"}}}, "sv"=>{"kalle"=>{"pelle"=>{"august"=>"ego"}}}}
+{"en"=>{"models"=>{"people"=>"people", "houses"=>"houses", "cars"=>"cars"}, "errors"=>{"unconnected"=>"You are not logged in", "houses_empty"=>"There are no houses defined"}}, "sv"=>{"models"=>{"people"=>"personer", "houses"=>"hus", "cars"=>"bilar"}, "errors"=>{"unconnected"=>"Du är inte inloggqd", "houses_empty"=>"Det finns inga hus specificerade"}}}

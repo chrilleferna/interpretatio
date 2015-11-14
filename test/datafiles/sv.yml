@@ -1,0 +1,10 @@
+sv:
+  models:
+    people: personer
+    houses: hus
+    cars: bilar
+  errors:
+    unconnected: Du är inte inloggqd
+    houses_empty: Det finns inga hus specificerade
+    
+    

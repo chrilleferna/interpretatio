@@ -1,9 +1,9 @@
-<h2>Add new translation key</h2>
+<h2>Add new localization key</h2>
 
 	<%= form_tag :action => :create do %>
 		<%= text_field_tag :key, @key %>
     <%= submit_tag %>
 	<% end %>
   <div class="hint" style="margin-top:6px">
-    A translation key is a string with sections separated by '.', for example <em>attributes.person.name</em>
+    A localization key is a string with sections separated by '.', for example <em>attributes.person.name</em>
   </div>
