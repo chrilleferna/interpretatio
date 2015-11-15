@@ -90,6 +90,31 @@ module Interpretatio
       end
     end
     
+    # ====================== Test of method: index and set_filter ======================
+    # 
+    test "normal index" do
+      init_normal
+      get :index
+      assert_equal 2, assigns(:toplevels).length, "Wrong number of toplevels"
+      assert_equal 5, assigns(:path_array).length, "Wrong number of total paths"
+    end
+    
+    test "index with only second language loaded into the hash" do
+      cleanup_all_files
+      # Don't load this: y1 = load_yaml_file('en')
+      y1 = {'en' => {}}
+      y2 = load_yaml_file('sv')
+      @mega = y1.rmerge(y2)
+      #@mega = y2
+      File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
+      FileUtils.rm Dir.glob(File.join(HASH_DIRECTORY, "*.yml"))
+      get :index
+      # assert puts assigns(:mega).inspect
+      assert_equal 2, assigns(:toplevels).length, "Wrong number of toplevels"
+      assert_equal 5, assigns(:path_array).length, "Wrong number of total paths"
+    end
+    
+    
     # ====================== Test of method: create ====================================
 
     test "adding new path should extend the hash and display confirmation" do
@@ -240,9 +265,6 @@ module Interpretatio
       assert_nil @mega.rread('sv.models.cars'.split('.')), "Swedish translation not removed"
       assert_equal "cars", @mega.rread('en.models.cars'.split('.')), "English translation changed"      
     end
-    
-    # ====================== Test of method: index and set_filter ======================
-    # Tested only manually with UI
     
     # ====================== Test of method: destroy ===================================
     

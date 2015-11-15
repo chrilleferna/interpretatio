@@ -35,7 +35,6 @@ module Interpretatio
   puts "  Backups in #{BACKUP_DIRECTORY}"
   puts "  Number of backups to be kept #{MAX_BACKUPS}"
   puts "  Languages supported #{LOCALES.inspect}"
-  
-  puts "hi it's me"
+
 
 end

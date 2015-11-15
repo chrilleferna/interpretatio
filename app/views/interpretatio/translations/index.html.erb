@@ -69,9 +69,9 @@
           <% current = @mega.rread(full_path) || "nil" %>
   				<td class="localization_string"><%= current %></td>
   				<td class="localization_input hidden">
-            <%= form_tag({:action => :update_record}, {:remote => true}) do %>
+            <%= form_tag({:action => :update_record}, {:remote => true, :autocomplete=>"off" }) do %>
               <%= hidden_field_tag :key, full_path.join('.') %>
-              <%= text_field_tag :new_value, current %>
+              <%= text_field_tag :new_value, current, :autocomplete=>"off" %>
               <%= submit_tag %>
             <% end %>
           </td>

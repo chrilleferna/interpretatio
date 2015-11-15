@@ -21,9 +21,9 @@ Interpretatio is compatible with Rails 4 (if you try it on other version of Rail
 
 1) Put
 
-----
+````
 gem "interpretatio"
-----
+````
 
 in your application's Gem file and run bundle install.
 

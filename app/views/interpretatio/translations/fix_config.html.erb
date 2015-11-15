@@ -2,14 +2,16 @@
 <p>
   
   <% if @errcode == "1" # === No HASH file found ==== %>
-    No Hash file is present in <%= @hash_directory %>. To correct the problem:
+    <p>No Hash file is present in <%= @hash_directory %>.</p>
+    <p>To correct the problem:</p>
     <ul>
+      <li>If no Hash file exists: <%= button_to "Create it !", {action: :initialize_hash_file}, :method => :get %>
+        <div class="hint">This is what you should do if you are just starting to use Interpretatio in your application.</div></li>
       <li>If a Hash file exists but in a different location:</li>
       <ul>
         <li>Move it to the correct location, or</li>
         <li>Change the HASH_DIRECTORY setting in the file config/initializers/interpretatio_initializer.rb and restart your server</li>
       </ul>
-      <li>If no Hash file exists: <%= link_to "Create it !", {action: :initialize_hash_file} %></li>
     </ul>
     
   <% elsif @errcode == "2" # === Language(s) missing from HASH file === %>

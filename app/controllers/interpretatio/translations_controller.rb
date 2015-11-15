@@ -33,10 +33,12 @@ module Interpretatio
     end
     
     def initialize_hash_file
+      # Create the hash file and imports all relevant YAML files
       @mega = {}
       LANGS.each{|lang| @mega[lang] = {}}
       File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
-      flash[:notice] = "Empty Hash file created"
+      num = _import_files(true)
+      flash[:notice] = "Hash file created and #{num} YAML files imported"
       redirect_to :action => :index
     end      
     
@@ -62,14 +64,17 @@ module Interpretatio
     # set_filter may be called from the index view to limit the localization records to be shozn
     #
     def index
-      session[:localization_section] = session[:localization_section] || "none"
+      session[:localization_section] = session[:localization_section] || ""
       @all_langs = LANGS
       @all_languages = LANGUAGES
-      @toplevels = @mega[LANGS[0]].keys.sort
+      # @toplevels = Union of the toplevels for all the languages in the hash
+      @toplevels = LANGS.inject([]){|mem,lang| mem |= @mega[lang].present? ? @mega[lang].keys : []}.sort
       @the_section = session[:localization_section] || ""
       @selected_langs = session[:localization_language] || @all_langs
       @translation_quality = session[:translation_quality] || "any"
-      @path_array = @mega[@all_langs[0]].hash_to_paths.rsort
+      # @path_array = Union of the path arrays for all the languages in the hash
+      # -- This is only for one language: @path_array = @mega[@all_langs[0]].hash_to_paths.rsort
+      @path_array = LANGS.inject([]){|mem, lang| mem |= @mega[lang].present? ? @mega[lang].hash_to_paths : []}.rsort
     end
 
     def set_filter
@@ -292,6 +297,17 @@ module Interpretatio
     
     def import_files
       overwrite = (params[:overwrite] == "yes")
+      num = _import_files(overwrite)
+      flash[:notice] = "#{num} YAML file(s) imported"
+      redirect_to :action => :import_export
+    end
+
+    # INTERNAL ROUTINES
+    # ==================
+    private
+  
+    def _import_files(overwrite)
+      # Import all relevant yaml files into the Hash. Return number of imported files
       num = 0
       for lang in LANGS do
         if File.exist?(File.join(YAML_DIRECTORY, "#{lang}.yml"))
@@ -307,14 +323,8 @@ module Interpretatio
       if num > 0
         File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
       end
-      flash[:notice] = "#{num} YAML file(s) imported"
-      redirect_to :action => :import_export
+      return num
     end
-
-    # LIBRARY ROUTINES
-    # ================
-    private
-  
   
     def pretty(h, level = 0)
       # Pretty hash printer that generates HTML to make the hash look like yaml

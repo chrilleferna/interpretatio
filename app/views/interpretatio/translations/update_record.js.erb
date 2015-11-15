@@ -1,4 +1,4 @@
-$("#<%= @underscored_key %>").find('.localization_string').html("<%= @val %>")
+$("#<%= @underscored_key %>").find('.localization_string').html("<%= @val || 'nil' %>")
 $("#<%= @underscored_key %>").find('.localization_input').addClass('hidden');
 $("#<%= @underscored_key %>").find('.btn_cancel').addClass('hidden');
 if ("<%= @result %>" == "OK"){ notify_me("Value modified"); }
