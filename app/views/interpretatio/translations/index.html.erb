@@ -11,7 +11,7 @@
   					<% for toplevel in @toplevels do %>
   						<% ctr = ctr || 0 %>
   						<% ctr = ctr + 1 %>
-  						<%= ctr%6 == 0 ? "</tr><tr>" : ""%>
+  						<%= raw ctr%6 == 0 ? "</tr><tr>" : ""%>
   							<td><%= toplevel %>: <%= radio_button_tag 'filter_section', toplevel, @the_section == toplevel %></td>
   					<% end %>
   			</table>
@@ -47,12 +47,12 @@
   <%= link_to "New localization record", :action => :new, :key => [] %>
 <% end %>
 
-<table class="localizations">
 <% for path in @path_array do %>
   <% # path is the path not including the language %>
 	<% if @the_section.to_s == "" or @the_section == path[0] %>
+  <table class="localizations">
   	<tr class="path-heading">
-  		<td colspan="2"><b><%= path.join('.') %></b></td>
+  		<td colspan=2 class="localization-key"><b><%= path.join('.') %></b></td>
   		<td><%= link_to "New", :action => :new, :key =>path %></td>
   		<td>
   			<%= link_to "Delete", {:action => :delete, :key => path}, :data => {:confirm => "Are you sure?"}, :method=>:delete %>
@@ -61,6 +61,8 @@
   			<%= link_to "Change", {:action => :edit_path, :key => path} %>
   		</td>
   	</tr>
+  </table>
+  <table class="localizations">
   	<% for lang in @mega.keys do %>
   		<% if @selected_langs.include?(lang) %>
         <% full_path = [lang].concat(path)%>
@@ -81,9 +83,10 @@
   			</tr>
   		<% end %>
   	<% end %>
+      </table>
 	<% end %>
 <% end %>
-</table>
+
 
 <script type="text/javascript" charset="utf-8">
 	function click_in_localization(elem) {

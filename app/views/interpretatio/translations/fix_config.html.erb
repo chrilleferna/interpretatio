@@ -5,7 +5,7 @@
     <p>No Hash file is present in <%= @hash_directory %>.</p>
     <p>To correct the problem:</p>
     <ul>
-      <li>If no Hash file exists: <%= button_to "Create it !", {action: :initialize_hash_file}, :method => :get %>
+      <li>If no Hash file exists: <%= link_to "Create it !", {action: :initialize_hash_file}, :class => :button %>
         <div class="hint">This is what you should do if you are just starting to use Interpretatio in your application.</div></li>
       <li>If a Hash file exists but in a different location:</li>
       <ul>
@@ -19,13 +19,13 @@
       There is a missing language in the Hash file. To correct the problem:
       <ul>
         <li>If the missing language is not supposed to be supported, then remove it from the file config/initializers/interpretatio_initializer.rb and restart your server</li>
-        <li>If it should be supported: <%= link_to "Add to Hash file !", {:action => :add_languages_to_hash, :langs_not_in_hash => @langs_not_in_hash} %></li>
+        <li>If it should be supported: <%= link_to "Add to Hash file !", {:action => :add_languages_to_hash, :langs_not_in_hash => @langs_not_in_hash}, :class => :button %></li>
       </ul>
     <% else %>
       There are <%= @langs_not_in_hash.length.to_s %> missing languages in the Hash file. To correct the problem:
       <ul>
         <li>If the missing languages are not supposed to be supported, then remove them from the file config/initializers/interpretatio_initializer.rb and restart your server</li>
-        <li>If they should be supported: <%= link_to "Add to Hash file !", {:action => :add_languages_to_hash, :langs_not_in_hash => @langs_not_in_hash} %></li>
+        <li>If they should be supported: <%= link_to "Add to Hash file !", {:action => :add_languages_to_hash, :langs_not_in_hash => "["+@langs_not_in_hash[0]+"]"}, :class => :button %></li>
       </ul>
     <% end %>
     
@@ -44,7 +44,7 @@
           <% else %>
             There are no localization records for this/these language(s) in the Hash file; which means that they can safely be removed.
           <% end %>
-          <%= link_to "Remove from Hash file !", {:action => :remove_languages_from_hash, :keys_not_in_langs => @keys_not_in_langs}, :data => {:confirm => "Are you sure?"} %>
+          <%= link_to "Remove from Hash file !", {:action => :remove_languages_from_hash, :keys_not_in_langs => @keys_not_in_langs}, :data => {:confirm => "Are you sure?"}, :class => :button %>
         </li>
       </ul>
     <% else %>

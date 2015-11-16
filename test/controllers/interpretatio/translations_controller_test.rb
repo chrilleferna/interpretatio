@@ -109,11 +109,9 @@ module Interpretatio
       File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
       FileUtils.rm Dir.glob(File.join(HASH_DIRECTORY, "*.yml"))
       get :index
-      # assert puts assigns(:mega).inspect
       assert_equal 2, assigns(:toplevels).length, "Wrong number of toplevels"
       assert_equal 5, assigns(:path_array).length, "Wrong number of total paths"
     end
-    
     
     # ====================== Test of method: create ====================================
 
@@ -250,6 +248,23 @@ module Interpretatio
       File.open(HASH_FILE, "r") {|file| @mega = eval(file.read)}
       assert_equal 4, @mega.keys.length, "Wrong number of languages in hash file after adding es and it"
       assert_equal({}, @mega['it'], "Language it not added")
+    end
+    
+    test "add languages to hash verifying the automatic import of YAML files" do
+      cleanup_all_files
+      # Don't load this: y1 = load_yaml_file('en')
+      # y1 = {'en' => {}}
+      y2 = load_yaml_file('sv')
+      @mega = y2
+      File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
+      assert_equal 1, @mega.keys.length, "Only one language should be in the hash"
+      assert_nil @mega.rread('en.errors.unconnected'.split('.')), "Data from english file had been loaded"
+      copy_yaml_file('en') # We now have the en YAML file in place
+      get :add_languages_to_hash, :langs_not_in_hash => ['en']
+      File.open(HASH_FILE, "r") {|file| @mega = eval(file.read)}
+      assert_equal 2, @mega.keys.length, "Two languages should be in the hash"
+      assert_equal 'You are not logged in', @mega.rread('en.errors.unconnected'.split('.')), "english file has not been loaded"
+      assert_equal "1 language(s) added and 1 corresponding YAML file(s) imported", flash[:notice]
     end
     
     

@@ -47,6 +47,8 @@ module Interpretatio
       File.open(HASH_FILE, "r") {|file| @mega = eval(file.read)}
       langs_not_in_hash.each{|lang| @mega[lang] = {}}
       File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
+      num = _import_files(false, langs_not_in_hash)
+      flash[:notice] = "#{langs_not_in_hash.length} language(s) added and #{num} corresponding YAML file(s) imported"
       redirect_to :action => :index
     end
     
@@ -306,24 +308,33 @@ module Interpretatio
     # ==================
     private
   
-    def _import_files(overwrite)
-      # Import all relevant yaml files into the Hash. Return number of imported files
+    def _import_files(overwrite, langs="all")
+      # Import all relevant yaml files into the Hash and store in Hash file. Return number of imported files
+      # The parameter langs is an array of relevant languages, which is "all" by default
+      thelangs = langs=="all" ? LANGS : langs
       num = 0
-      for lang in LANGS do
+      for lang in thelangs do
+        num += _import_one_file(lang, overwrite)
+      end
+      if num > 0
+        File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
+      end
+      return num
+    end
+    
+    def _import_one_file(lang, overwrite)
+      # Import one YAML file into the Hash (not in the file) and return 0 or 1 depending on the presence of the file
         if File.exist?(File.join(YAML_DIRECTORY, "#{lang}.yml"))
-          num += 1
           data = YAML::load( File.open(File.join(YAML_DIRECTORY, "#{lang}.yml" )))
           if overwrite
             @mega = @mega.deep_merge(data)
           else
             @mega = data.deep_merge(@mega)
           end
+          return 1
+        else
+          return 0
         end
-      end
-      if num > 0
-        File.open(HASH_FILE, "w") {|file| file.puts @mega.inspect }
-      end
-      return num
     end
   
     def pretty(h, level = 0)
