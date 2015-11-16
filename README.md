@@ -24,7 +24,7 @@ Interpretatio is compatible with Rails 4 (if you try it on other version of Rail
 Put
 
 ````
-gem "interpretatio"
+gem 'interpretatio', :git => "https://github.com/chrilleferna/interpretatio.git"
 ````
 
 in your application's Gem file and run bundle install.
