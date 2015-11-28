@@ -199,6 +199,7 @@ module Interpretatio
           errmsg = "Could not update"
         end
       end
+      logger.debug errmsg
       @result="HICK"
       respond_to do |format|
         if ok
@@ -357,7 +358,7 @@ module Interpretatio
     def legal_key?(key)
       # word, optionally followed by any number of  .word
       # logger.debug "\n\n#{key} : #{path =~ /^[a-z]*(\.[a-z]+)*$/}\n\n"
-      return !(key =~ /^[a-z]*(\.[a-z]+)*$/).nil?
+      return !(key =~ /^[a-z]*(\.[a-z_\-]+)*$/).nil?
     end
     
     def legal_value?(val)

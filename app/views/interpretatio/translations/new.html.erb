@@ -3,6 +3,7 @@
 	<%= form_tag :action => :create do %>
 		<%= text_field_tag :key, @key %>
     <%= submit_tag %>
+    <%= link_to " Cancel", root_path,  :class => "btn_cancel" %>
 	<% end %>
   <div class="hint" style="margin-top:6px">
     A localization key is a string with sections separated by '.', for example <em>attributes.person.name</em>

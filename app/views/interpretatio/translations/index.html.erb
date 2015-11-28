@@ -73,11 +73,11 @@
   				<td class="localization_input hidden">
             <%= form_tag({:action => :update_record}, {:remote => true, :autocomplete=>"off" }) do %>
               <%= hidden_field_tag :key, full_path.join('.') %>
-              <%= text_field_tag :new_value, current, :autocomplete=>"off" %>
+              <%= text_area_tag :new_value, current, :autocomplete=>"off" %>
+          </td>
+          <td class="localization_input hidden">
               <%= submit_tag %>
             <% end %>
-          </td>
-          <td>
             <button class="btn_cancel hidden">Cancel</button>
           </td>
   			</tr>

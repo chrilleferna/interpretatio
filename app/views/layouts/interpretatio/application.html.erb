@@ -13,18 +13,20 @@
 </head>
 <body class="interpretatio">
 	<div id ="page">
-		<h1>Interpretatio Localization Workbench</h1>
-    <div class="menu">
-      <ul>
-        <li><%= link_to "Home", main_app.root_path %></li>
-        <li><%= link_to "Localization records", {:controller => :translations, :action => :index} %></li>
-        <li><%= link_to "Import and Export YAML", {:controller => :translations, :action => :import_export} %></li>
-      </ul>
+    <div id="header">
+  		<h1>Interpretatio Localization Workbench</h1>
+      <div class="menu">
+        <ul>
+          <li><%= link_to "Home", main_app.root_path %></li>
+          <li><%= link_to "Localization records", {:controller => :translations, :action => :index} %></li>
+          <li><%= link_to "Import and Export YAML", {:controller => :translations, :action => :import_export} %></li>
+        </ul>
+      </div>
+  		<div id="notices" class="hidden"></div>
+  		<div id="flash_notice" class="hidden"><%= flash[:notice] %></div>
+      <div id="flash_warning" class="hidden"><%= flash[:warning] %></div>
+      <div id="flash_error" class="hidden"><%= flash[:error] %></div>
     </div>
-		<div id="notices" class="hidden"></div>
-		<div id="flash_notice" class="hidden"><%= flash[:notice] %></div>
-    <div id="flash_warning" class="hidden"><%= flash[:warning] %></div>
-    <div id="flash_error" class="hidden"><%= flash[:error] %></div>
 		<div id="content">	
 			<%= yield %>
 		</div>

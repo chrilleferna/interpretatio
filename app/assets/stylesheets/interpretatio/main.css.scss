@@ -6,12 +6,12 @@ html.interpretatio {
 	font-family:  arial, helvetica, sans-serif;
 	font-size: 90%;
   margin-left:10px;
+  #page {position:relative}
 
-
+  div#header {position: fixed; top: 0px; width:100%; z-index:1000;}
   h1 {background-color: #999; color: white; padding-top: 8px; padding-bottom: 8px; padding-left:4px; width:100%; margin:0px;}
   .hidden {display:none;}
   h2, h3 {max-width:500px;}
-  #page {position:relative}
   #actions {position: absolute; top:-90px; left: 500px}
   #notices, #flash_notice, #flash_error, #flash_warning {position: absolute; left: 0px; top: 75px; border: 1px solid #888; padding: 8px; width:auto; margin-bottom:10px;}
   #notices {left:550px; background-color: hsl(99, 80%, 60%)}
@@ -25,7 +25,7 @@ html.interpretatio {
 
   .warning {background: hsl(58, 70%, 56%);}
 
-  #content {position: absolute; top:110px}
+  #content {position: absolute; top:110px; z-index:999;}
 
   div#filter {
     margin-bottom:3em;
@@ -49,10 +49,14 @@ html.interpretatio {
       td { vertical-align: top;}
       .lang {width:20px; padding-top:9px; font-style:italic;}
       .localization_string {
-        color: green; padding-top:9px; padding-bottom: 9px;
+        color: green; padding-top:9px; padding-bottom: 9px; width:300px;
       }
+      button.btn_cancel {margin-top:10px; margin-left:0px; }
     }
-  	.localization_input {color: blue;}
+  	.localization_input {position: relative;
+      textarea {margin-top: 10px; width: 300px; height: 4em; color:green;}
+      input[type="submit"] { margin-top:10px; margin-left:10px; }
+    }
   }
 
   div.menu {
