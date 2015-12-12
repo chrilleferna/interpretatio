@@ -358,7 +358,7 @@ module Interpretatio
     def legal_key?(key)
       # word, optionally followed by any number of  .word
       # logger.debug "\n\n#{key} : #{path =~ /^[a-z]*(\.[a-z]+)*$/}\n\n"
-      return !(key =~ /^[a-z]*(\.[a-z_\-]+)*$/).nil?
+      return !(key =~ /^[0-9a-z]*(\.[0-9a-z_\-]+)*$/).nil?
     end
     
     def legal_value?(val)
